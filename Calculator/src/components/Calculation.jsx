@@ -4,18 +4,14 @@ import './Calculation.css'
 const Calculation =()=>{
 
   const [value, setValue] = useState('');
-  const [history, setHistory] = useState([]);
+
 
     return(
         <>
           <div className="container">
             <div className="calculator">
               <form name="form">
-                <div>
-                  <div className="history">
-                    
-                  </div>
-                </div>
+                
                 <div>
                   <input type="text" placeholder="0" value={value} id="result" disabled />  
                 </div>
