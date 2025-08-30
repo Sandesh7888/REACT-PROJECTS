@@ -8,3 +8,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  background: #1e1e1e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
