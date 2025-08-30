@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "./Weather.css";
 
 import  {clear, humidity, wind,search} from '../assets/index.js'; 
 
