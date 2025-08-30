@@ -11,7 +11,7 @@ const ThemeToggle = ({ theme, setTheme }) => {
         />
         <span className="slider"></span>
       </label>
-      <span className="mode-label">{theme === "light" ? "☀️ Day" : "🌙 Night"}</span>
+      {/* <span className="mode-label">{theme === "light" ? "☀️ Day" : "🌙 Night"}</span> */}
     </div>
   );
 };
