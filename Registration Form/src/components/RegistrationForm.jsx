@@ -1,5 +1,5 @@
-import useForm from "../hooks/useForm";
-import  validate from "../hooks/validate";
+import useForm from "../hooks/useForm.js";
+import  validate from "../hooks/validate.js";
 import React from "react";
 import 'RegistrationForm.css';
 const RegistrationForm = () => {
