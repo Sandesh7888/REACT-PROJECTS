@@ -8,4 +8,4 @@ import snow from './snow.png';
 import wind from './wind.png';
 
 
-export { clear,cloud,drizzle,humidity,rain,snow,wind,s };
+export { clear,cloud,drizzle,humidity,rain,snow,wind,s };       
