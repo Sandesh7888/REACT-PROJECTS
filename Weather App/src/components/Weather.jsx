@@ -23,6 +23,32 @@ const Weather = () => {
     "13n": snow,
   };
 
+  const search = async (city) => {
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${
+        import.meta.env.VITE_OWM_KEY
+      }`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+      console.log(data);
+
+      setWeather({
+        humidity: data.main.humidity,
+        wind: data.wind.speed,
+        temperature: Math.floor(data.main.temp),
+        location: data.name,
+        icon: allIcon[data.weather[0].icon] || clear, // fallback if not mapped
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    search("London");
+  }, []);
+
   return (
     <div className="weather">
       <div className="searchbar">

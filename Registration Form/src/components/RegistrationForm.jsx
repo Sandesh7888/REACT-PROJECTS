@@ -10,7 +10,17 @@ const RegistrationForm = () => {
       <h2>Registration Form</h2>
       <form onSubmit={handleSubmit}>
         
-      
+        {/* Name Field */}
+        <div>
+          <label>Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={values.name}
+            onChange={handleChange}
+          />
+          {errors.name && <p className="error">{errors.name}</p>}
+        </div>
 
         {/* Email Field */}
         <div>
