@@ -20,7 +20,15 @@ const RegistrationForm = () => {
             onChange={handleChange}
           />
           {errors.name && <p className="error">{errors.name}</p>}
-   
+        </div>
+
+        {/* Email Field */}
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={values.email}
             onChange={handleChange}
           />
           {errors.email && <p className="error">{errors.email}</p>}
