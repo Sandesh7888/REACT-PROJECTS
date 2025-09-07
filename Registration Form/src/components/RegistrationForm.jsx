@@ -36,17 +36,12 @@ const RegistrationForm = () => {
 
         {/* Password Field */}
         <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={values.password}
-            onChange={handleChange}
+
           />
           {errors.password && <p className="error">{errors.password}</p>}
         </div>
 
-        <button type="submit">Submit</button>
+      
       </form>
     </div>
   );
