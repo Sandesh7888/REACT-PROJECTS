@@ -40,13 +40,6 @@ export default function App() {
 
       <MemberForm onMemberAdded={fetchTree} />
 
-      <main>
-        {treeData ? (
-          <Tree treeData={treeData} />
-        ) : (
-          <p style={{ marginTop: "1rem" }}>Enter a root ID to load the tree.</p>
-        )}
-      </main>
-    </div>
+      \
   );
 }
