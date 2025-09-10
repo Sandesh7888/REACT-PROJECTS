@@ -1,3 +1,4 @@
+// src/components/Tree.jsx
 import ReactFlow, { MiniMap, Controls, Background } from "reactflow";
 import "reactflow/dist/style.css";
 import { useMemo } from "react";
@@ -27,7 +28,7 @@ export default function Tree({ treeData }) {
       });
     }
 
-    walk(treeData, 0);
+    if (treeData) walk(treeData, 0);
     return { nodes, edges };
   }, [treeData]);
 

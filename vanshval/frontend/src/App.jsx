@@ -1,3 +1,4 @@
+// inside imports
 import { useState, useEffect } from "react";
 import Tree from "./components/Tree";
 import MemberForm from "./components/MemberForm";
@@ -7,45 +8,58 @@ import "./App.css";
 export default function App() {
   const [rootId, setRootId] = useState("");
   const [treeData, setTreeData] = useState(null);
+  const [members, setMembers] = useState([]);
+
+  // fetch all members for selector
+  const fetchMembers = async () => {
+    try {
+      const { data } = await api.get("/members");
+      setMembers(data);
+    } catch (err) {
+      console.error("Failed to load members", err);
+    }
+  };
 
   // Fetch tree from backend
-  const fetchTree = async () => {
-    if (!rootId) return alert("Enter Root Member ID!");
+  const fetchTree = async (id) => {
+    const useId = id || rootId;
+    if (!useId) return alert("Select Root Member!");
     try {
-      const { data } = await api.get(`/tree/${rootId}`);
+      const { data } = await api.get(`/tree/${useId}`);
       setTreeData(data);
     } catch (error) {
-      alert("Error fetching tree: " + error.message);
+      console.error(error);
+      alert("Error fetching tree: " + (error.response?.data?.message || error.message));
     }
   };
 
   useEffect(() => {
-    if (rootId) fetchTree();
-  }, [rootId]);
+    fetchMembers();
+  }, []);
 
   return (
     <div className="container">
       <header>
         <h1>🌳 Vanshval — Family Tree</h1>
+
         <div className="form-inline">
-          <input
-            type="text"
-            placeholder="Enter Root Member ID"
-            value={rootId}
-            onChange={(e) => setRootId(e.target.value)}
-          />
-          <button onClick={fetchTree}>Load Tree</button>
+          <select value={rootId} onChange={(e) => setRootId(e.target.value)}>
+            <option value="">— Select root member —</option>
+            {members.map((m) => (
+              <option key={m._id} value={m._id}>
+                {m.name} — {m._id.slice(0, 8)}{/* short id shown */}
+              </option>
+            ))}
+          </select>
+
+          <button onClick={() => fetchTree()}>Load Tree</button>
         </div>
       </header>
 
-      <MemberForm onMemberAdded={fetchTree} />
+      <MemberForm onMemberAdded={() => { fetchMembers(); fetchTree(); }} />
 
       <main>
-        {treeData ? (
-          <Tree treeData={treeData} />
-        ) : (
-          <p style={{ marginTop: "1rem" }}>Enter a root ID to load the tree.</p>
-        )}
+        {treeData ? <Tree treeData={treeData} /> : <p style={{ marginTop: "1rem" }}>Select a root to load the tree.</p>}
       </main>
     </div>
   );

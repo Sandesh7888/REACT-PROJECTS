@@ -1,3 +1,4 @@
+// src/components/MemberForm.jsx
 import { useState } from "react";
 import api from "../api";
 
@@ -22,9 +23,10 @@ export default function MemberForm({ onMemberAdded }) {
 
       alert("Member added successfully!");
       setForm({ name: "", parentsCsv: "" });
-      onMemberAdded();
+      if (typeof onMemberAdded === "function") onMemberAdded();
     } catch (error) {
-      alert("Error adding member: " + error.message);
+      console.error(error);
+      alert("Error adding member: " + (error.response?.data?.message || error.message));
     }
   };
 
