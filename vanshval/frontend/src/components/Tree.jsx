@@ -31,6 +31,21 @@ export default function Tree({ treeData }) {
     if (treeData) walk(treeData, 0);
     return { nodes, edges };
   }, [treeData]);
+  nodes.push({
+  id: node._id,
+  data: { label: node.name },
+  style: {
+    backgroundColor:
+      node.gender === "male" ? "#4A90E2" :
+      node.gender === "female" ? "#FF69B4" :
+      "#B0B0B0",
+    color: "#fff",
+    borderRadius: "8px",
+    padding: "8px"
+  },
+  position: { x: depth * 220, y: row * 100 }
+});
+
 
   return (
     <div style={{ width: "100%", height: "80vh", backgroundColor: "#f9f9f9" }}>

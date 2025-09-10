@@ -1,38 +1,59 @@
 import Member from "../models/Member.js";
 
-export async function createMember(req, res, next) {
+// ✅ Create a new member
+export const createMember = async (req, res) => {
   try {
-    const member = await Member.create(req.body);
+    const { name, gender, parents, spouses, family } = req.body;
+
+    const member = new Member({
+      name,
+      gender,
+      parents,
+      spouses,
+      family: family || null,
+    });
+
+    await member.save();
     res.status(201).json(member);
-  } catch (e) { next(e); }
-}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error creating member" });
+  }
+};
 
-export async function getMembers(req, res, next) {
+// ✅ Get all members (for dropdowns)
+export const getAllMembers = async (req, res) => {
   try {
-    const members = await Member.find().lean();
+    const members = await Member.find().sort({ name: 1 });
     res.json(members);
-  } catch (e) { next(e); }
-}
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching members" });
+  }
+};
 
-export async function getMemberById(req, res, next) {
+// ✅ Get tree by root member ID
+export const getFamilyTree = async (req, res) => {
   try {
-    const member = await Member.findById(req.params.id).lean();
-    if (!member) return res.status(404).json({ message: "Not found" });
-    res.json(member);
-  } catch (e) { next(e); }
-}
+    const rootId = req.params.id;
+    const root = await Member.findById(rootId).populate("children spouses parents");
 
-export async function updateMember(req, res, next) {
-  try {
-    const member = await Member.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!member) return res.status(404).json({ message: "Not found" });
-    res.json(member);
-  } catch (e) { next(e); }
-}
+    if (!root) return res.status(404).json({ message: "Root member not found" });
 
-export async function deleteMember(req, res, next) {
-  try {
-    await Member.findByIdAndDelete(req.params.id);
-    res.status(204).end();
-  } catch (e) { next(e); }
-}
+    const buildTree = async (member) => {
+      const children = await Member.find({ parents: member._id });
+      return {
+        _id: member._id,
+        name: member.name,
+        gender: member.gender,
+        spouses: member.spouses,
+        children: await Promise.all(children.map(buildTree)),
+      };
+    };
+
+    const tree = await buildTree(root);
+    res.json(tree);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching family tree" });
+  }
+};
