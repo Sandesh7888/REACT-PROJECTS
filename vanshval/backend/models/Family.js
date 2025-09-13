@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import User from "./User.js";
+
 
 const familySchema = new mongoose.Schema(
   {
