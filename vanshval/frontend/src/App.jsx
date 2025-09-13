@@ -1,4 +1,4 @@
-// inside imports
+// src/App.jsx
 import { useState, useEffect } from "react";
 import Tree from "./components/Tree";
 import MemberForm from "./components/MemberForm";
@@ -20,12 +20,12 @@ export default function App() {
     }
   };
 
-  // Fetch tree from backend
+  // Fetch tree from backend — CORRECT route: /members/tree/:id
   const fetchTree = async (id) => {
     const useId = id || rootId;
     if (!useId) return alert("Select Root Member!");
     try {
-      const { data } = await api.get(`/tree/${useId}`);
+      const { data } = await api.get(`/members/tree/${useId}`);
       setTreeData(data);
     } catch (error) {
       console.error(error);
@@ -47,7 +47,7 @@ export default function App() {
             <option value="">— Select root member —</option>
             {members.map((m) => (
               <option key={m._id} value={m._id}>
-                {m.name} — {m._id.slice(0, 8)}{/* short id shown */}
+                {m.name} — {String(m._id).slice(0, 8)}
               </option>
             ))}
           </select>

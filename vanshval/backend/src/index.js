@@ -1,37 +1,30 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import cors from "cors";
-import memberRoutes from "./routes/members.js";
+import morgan from "morgan";
+import dotenv from "dotenv";
+
+import memberRoutes from "./routes/members.js"; // 👈 check this path
 
 dotenv.config();
-const app = express();
 
-// ✅ Middleware
+const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(morgan("dev"));
 
-// ✅ API Routes
-app.use("/api/members", memberRoutes);
+// Mount routes
+app.use("/api/members", memberRoutes); // 👈 Base path
 
-// ✅ Test Route
-app.get("/", (req, res) => {
-  res.send("🌳 Vanshval API is running!");
-});
+// Test route
+app.get("/", (req, res) => res.send("API is running"));
 
-// ✅ MongoDB Connection
-const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/vanshval";
-
-mongoose
-  .connect(MONGO_URI)
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    console.log("✅ Connected to MongoDB");
-    app.listen(PORT, () =>
-      console.log(`🚀 Server running on http://localhost:${PORT}`)
+    console.log("MongoDB connected");
+    app.listen(process.env.PORT || 5000, () =>
+      console.log(`Server running on port ${process.env.PORT || 5000}`)
     );
   })
-  .catch((err) => {
-    console.error("❌ MongoDB connection failed:", err.message);
-    process.exit(1);
-  });
+  .catch((err) => console.error(err));
