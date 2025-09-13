@@ -1,14 +1,11 @@
 import express from "express";
-import {
-  createMember,
-  getAllMembers,
-  getFamilyTree,
-} from "../controllers/memberController.js";
+import { createMember, getMembers, getTree } from "../controllers/memberController.js";
+import auth from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post("/", createMember); // Add a member
-router.get("/", getAllMembers); // Get all members
-router.get("/tree/:id", getFamilyTree); // Get family tree
+router.post("/", auth, createMember);
+router.get("/", auth, getMembers);
+router.get("/tree/:id", auth, getTree);
 
 export default router;
