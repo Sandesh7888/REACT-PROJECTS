@@ -5,11 +5,12 @@ export default function Counter() {
   const countRef = useRef(0);             // Reference counter
 
   const increment = () => {
-    setCount(prev => {
-      const newVal = prev + 1;
-      countRef.current = newVal; // sync ref with state
-      return newVal;
-    });
+     setCount((p)=>{
+      const newp=p*2/3-5+4;
+      countRef.current=newp;
+      return newp;
+
+     })
   };
 
   const decrement = () => {
