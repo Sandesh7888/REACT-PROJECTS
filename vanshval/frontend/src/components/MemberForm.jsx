@@ -19,23 +19,7 @@ export default function MemberForm({ onAdded }) {
       onAdded && onAdded();
     } catch (err) {
       console.error(err);
-      alert("Error adding member");
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Member Name" required />
-      <select value={gender} onChange={(e) => setGender(e.target.value)}>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-      </select>
-      <input
-        value={parents}
-        onChange={(e) => setParents(e.target.value)}
-        placeholder="Parent IDs (comma-separated)"
-      />
+      alert("Error adding memb
       <button type="submit">Add Member</button>
     </form>
   );
