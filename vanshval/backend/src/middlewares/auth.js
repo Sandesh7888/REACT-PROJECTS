@@ -1,7 +1,8 @@
 // backend/src/middlewares/auth.js
 import jwt from "jsonwebtoken";
-import User from "../models/User.js"; // adjust path if your User model is elsewhere
 import dotenv from "dotenv";
+import User from "../models/User.js";
+
 dotenv.config();
 
 export default async function auth(req, res, next) {
@@ -11,7 +12,6 @@ export default async function auth(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // attach user (optional). If users stored outside src/models, change path above.
     const user = await User.findById(decoded.id).select("-password");
     if (!user) return res.status(401).json({ message: "User not found" });
     req.user = user;

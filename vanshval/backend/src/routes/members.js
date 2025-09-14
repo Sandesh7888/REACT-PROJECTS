@@ -1,7 +1,8 @@
 import express from "express";
 import { createMember, getMembers, getTree } from "../controllers/memberController.js";
-import auth from "../../middlewares/auth.js";
-import User from "../../models/User.js";
+import User from "../models/User.js";
+import auth from "./src/middlewares/auth.js";
+
 
 
 const router = express.Router();

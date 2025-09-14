@@ -1,4 +1,3 @@
-// backend/src/controllers/memberController.js
 import Member from "../models/Member.js";
 
 export const createMember = async (req, res) => {
