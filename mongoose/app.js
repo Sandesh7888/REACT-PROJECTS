@@ -23,34 +23,48 @@ app.get('/create', async (req, res) => {
     res.send(createdUser);
 });
 
-app.get('/product',async(req,res)=>{
-    const createProduct= await productModel.create({
-        id:1,
-        name:"car",
-        
-       
-    },
-    {
-        id:2,
-        name:"bike"
-
-    })
-    res.send(createProduct)
-
-})
 
 
-app.get('/car',async (req,res)=>{
-    const cbike = await carModel.create({
-        name:"m1",
-        color:"metalic black"
-    },{
-        name:"m2",
-        color:"fiber yellowgreen"
-    })
 
-    res.send(cbike);
-})
 app.listen(3000, () => {
     console.log("Server running on port 3000");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// app.get('/product',async(req,res)=>{
+//     const createProduct= await productModel.create({
+//         id:1,
+//         name:"car",
+//     },
+//     {
+//         id:2,
+//         name:"bike"
+//     })
+//     res.send(createProduct)
+// })
+// app.get('/car',async (req,res)=>{
+//     const cbike = await carModel.create({
+//         name:"m1",
+//         color:"metalic black"
+//     },{
+//         name:"m2",
+//         color:"fiber yellowgreen"
+//     })
+
+//     res.send(cbike);
+// })
