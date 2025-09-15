@@ -12,7 +12,16 @@ router.get("/:id", async (req, res, next) => {
     const { id } = req.params;
 
     // validate ObjectId early to avoid CastError
-  s
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid member id format" });
+    }
+
+    const tree = await buildTree(id);
+
+    if (!tree) return res.status(404).json({ message: "Root not found" });
+
+    res.json(tree);
+  } catch (err) {
     // log full error server-side for debugging
     console.error("Error in GET /api/tree/:id", err);
     // send helpful message to client
