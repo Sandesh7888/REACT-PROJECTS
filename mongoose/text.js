@@ -49,3 +49,23 @@
 // let newarr = arr.map((a)=>{ return a>3;})
 // console.log(newarr);
 
+// newarr=arr.filter((a)=>{a>3})
+// console.log(newarr);
+
+// newarr =arr.reduce((a,v)=>{a=a+v},0)
+// console.log(newarr);
+
+
+
+function smallestword(str) {
+    let words = str.trim().split("");
+    let smallest = words[0];
+    for (let word of words) {
+        if (word.length < smallest.length) {
+            smallest = word;
+        }
+    }
+    return smallest;
+}
+console.log(smallestword(" i am         a       sandesh")); 
+
