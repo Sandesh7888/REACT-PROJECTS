@@ -1,14 +1,9 @@
 import express from "express";
-import { createMember, getMembers, getTree } from "../controllers/memberController.js";
-import User from "../models/User.js";
-import auth from "./src/middlewares/auth.js";
-
-
-
+import { addMember, getMembers } from "../controllers/memberController.js";
+import { protect } from "../middlewares/auth.js";
 const router = express.Router();
 
-router.post("/", auth, createMember);
-router.get("/", auth, getMembers);
-router.get("/tree/:id", auth, getTree);
+router.get("/", protect, getMembers);
+router.post("/", protect, addMember);
 
 export default router;

@@ -1,16 +1,12 @@
-export default function buildTree(members, rootId) {
+// Build nested member tree from a flat list
+export default function buildTree(members) {
   const map = {};
-  members.forEach(m => (map[m._id] = { ...m, children: [] }));
+  members.forEach(m => map[m._id] = { ...m._doc, children: [] });
+  const roots = [];
 
-  let root = null;
   members.forEach(m => {
-    if (m.parents?.length) {
-      m.parents.forEach(pid => {
-        if (map[pid]) map[pid].children.push(map[m._id]);
-      });
-    }
-    if (m._id.toString() === rootId) root = map[m._id];
+    if (m.parent) map[m.parent]?.children.push(map[m._id]);
+    else roots.push(map[m._id]);
   });
-
-  return root;
+  return roots;
 }
