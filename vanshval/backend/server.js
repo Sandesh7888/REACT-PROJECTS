@@ -6,7 +6,18 @@ import dotenv from "dotenv";
 
 import memberRoutes from "./src/routes/members.js"; 
 import authRoutes from "./src/routes/auth.js";
-impo
+import treeRoutes from "./src/routes/tree.js";
+
+dotenv.config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use("/api/members", memberRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/tree", treeRoutes);
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
