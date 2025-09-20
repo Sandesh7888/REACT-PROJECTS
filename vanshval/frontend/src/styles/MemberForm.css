@@ -1,0 +1,70 @@
+/* Form Card */
+.member-form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  display: grid;
+  gap: 1rem;
+  max-width: 700px;
+  margin: 2rem auto;
+}
+
+/* Heading */
+.member-form h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1e293b;
+  text-align: center;
+}
+
+/* Inputs & Selects */
+.member-form input,
+.member-form select {
+  padding: 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.member-form input:focus,
+.member-form select:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.25);
+}
+
+/* Date fields side by side */
+.member-form-dates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Labels */
+.member-form label {
+  font-size: 0.9rem;
+  color: #374151;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+/* Button */
+.member-form button {
+  background: #3b82f6;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.25s;
+  width: fit-content;
+  margin-top: 1rem;
+}
+
+.member-form button:hover {
+  background: #2563eb;
+}

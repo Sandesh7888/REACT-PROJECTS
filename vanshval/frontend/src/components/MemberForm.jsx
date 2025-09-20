@@ -1,136 +1,137 @@
-// frontend/src/components/MemberForm.jsx
 import React, { useState, useEffect } from "react";
 import api from "../api/index.js";
+import "../styles/MemberForm.css";
 
-function looksLikeObjectId(val) {
-  return typeof val === "string" && /^[0-9a-fA-F]{24}$/.test(val);
-}
 
 export default function MemberForm({ onAdded }) {
   const [form, setForm] = useState({
     name: "",
-    gender: "other",
-    parentsCsv: "",
-    spousesCsv: "",
+    gender: "male",
+    dob: "",
+    dod: "",
+    info: "",
+    parents: [],
+    spouses: [],
     family: ""
   });
+
   const [members, setMembers] = useState([]);
-  const [loadingMembers, setLoadingMembers] = useState(true);
+  const [families, setFamilies] = useState([]);
 
   useEffect(() => {
-    let mounted = true;
-    api
-      .get("/members")
-      .then((r) => {
-        if (!mounted) return;
-        setMembers(r.data || []);
-      })
-      .catch(() => setMembers([]))
-      .finally(() => setLoadingMembers(false));
-    return () => (mounted = false);
+    api.get("/members").then(r => setMembers(r.data)).catch(()=>setMembers([]));
+    api.get("/families").then(r => setFamilies(r.data)).catch(()=>setFamilies([]));
   }, []);
-
-  const parseCsv = (csv) =>
-    csv
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-  const resolveNamesToIds = (tokens) => {
-    // returns { ids, missing } where missing are token strings not found
-    const ids = [];
-    const missing = [];
-    tokens.forEach((t) => {
-      if (looksLikeObjectId(t)) {
-        ids.push(t);
-        return;
-      }
-      // case-insensitive lookup by name
-      const match = members.find((m) => m.name && m.name.toLowerCase() === t.toLowerCase());
-      if (match) ids.push(match._id);
-      else missing.push(t);
-    });
-    return { ids, missing };
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name) return alert("Name is required");
-
-    // parse inputs
-    const parentsTokens = parseCsv(form.parentsCsv);
-    const spousesTokens = parseCsv(form.spousesCsv);
-
-    // resolve
-    const { ids: parentIds, missing: missingParents } = resolveNamesToIds(parentsTokens);
-    const { ids: spouseIds, missing: missingSpouses } = resolveNamesToIds(spousesTokens);
-
-    if (missingParents.length || missingSpouses.length) {
-      const msgs = [];
-      if (missingParents.length) msgs.push(`Parents not found: ${missingParents.join(", ")}`);
-      if (missingSpouses.length) msgs.push(`Spouses not found: ${missingSpouses.join(", ")}`);
-      msgs.push("Tip: enter exact name shown in members list, or pass the member's id (24 hex chars).");
-      return alert(msgs.join("\n"));
-    }
-
-    const payload = {
-      name: form.name,
-      gender: form.gender,
-      parents: parentIds,
-      spouses: spouseIds,
-      family: form.family || undefined
-    };
-
     try {
-      console.log("DEBUG token:", localStorage.getItem("token"));
-      const { data } = await api.post("/members", payload);
-      alert(`Member added: ${data.name || data._id}`);
-      setForm({ name: "", gender: "other", parentsCsv: "", spousesCsv: "", family: "" });
+      const { data } = await api.post("/members", form);
+      alert(`Member added: ${data.name}`);
+      setForm({
+        name: "",
+        gender: "male",
+        dob: "",
+        dod: "",
+        info: "",
+        parents: [],
+        spouses: [],
+        family: ""
+      });
       onAdded && onAdded();
     } catch (err) {
-      console.error("Add member error:", err);
       alert("Error adding member: " + (err.response?.data?.message || err.message));
     }
   };
 
   return (
     <form className="member-form" onSubmit={handleSubmit}>
+      <h2>Family Manager</h2>
+
       <input
         placeholder="Name"
         value={form.name}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
+        onChange={e => setForm({ ...form, name: e.target.value })}
         required
       />
-      <select value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value })}>
-        <option value="other">Other</option>
+
+      <select
+        value={form.gender}
+        onChange={e => setForm({ ...form, gender: e.target.value })}
+      >
         <option value="male">Male</option>
         <option value="female">Female</option>
+        <option value="other">Other</option>
       </select>
 
-      <input
-        placeholder="Family ID (optional)"
-        value={form.family}
-        onChange={(e) => setForm({ ...form, family: e.target.value })}
-      />
-
-      <input
-        placeholder="Parent names or IDs (comma-separated) e.g. Dagadu, 64f8a..."
-        value={form.parentsCsv}
-        onChange={(e) => setForm({ ...form, parentsCsv: e.target.value })}
-      />
-      <input
-        placeholder="Spouse names or IDs (comma-separated)"
-        value={form.spousesCsv}
-        onChange={(e) => setForm({ ...form, spousesCsv: e.target.value })}
-      />
-
-      <div style={{ fontSize: 12, color: "#666", margin: "6px 0" }}>
-        {loadingMembers ? "Loading members..." : (
-          <span>
-            Members loaded: {members.length}. Use exact name (case-insensitive) or id. Example: <strong>{members.slice(0,3).map(m=>m.name+" ("+m._id.slice(0,6)+")").join(", ")}</strong>
-          </span>
-        )}
+      <div className="member-form-dates">
+        <input
+          type="date"
+          value={form.dob}
+          onChange={e => setForm({ ...form, dob: e.target.value })}
+          placeholder="DOB"
+        />
+        <input
+          type="date"
+          value={form.dod}
+          onChange={e => setForm({ ...form, dod: e.target.value })}
+          placeholder="Date of Death"
+        />
       </div>
+
+      <input
+        placeholder="Info / Notes"
+        value={form.info}
+        onChange={e => setForm({ ...form, info: e.target.value })}
+      />
+
+      <select
+        value={form.family}
+        onChange={e => setForm({ ...form, family: e.target.value })}
+      >
+        <option value="">— Select Family —</option>
+        {families.map(f => (
+          <option key={f._id} value={f._id}>
+            {f.name} ({f._id})
+          </option>
+        ))}
+      </select>
+
+      <label>Parents</label>
+      <select
+        multiple
+        value={form.parents}
+        onChange={e =>
+          setForm({
+            ...form,
+            parents: Array.from(e.target.selectedOptions, o => o.value)
+          })
+        }
+      >
+        {members.map(m => (
+          <option key={m._id} value={m._id}>
+            {m.name}
+          </option>
+        ))}
+      </select>
+
+      <label>Spouses</label>
+      <select
+        multiple
+        value={form.spouses}
+        onChange={e =>
+          setForm({
+            ...form,
+            spouses: Array.from(e.target.selectedOptions, o => o.value)
+          })
+        }
+      >
+        {members.map(m => (
+          <option key={m._id} value={m._id}>
+            {m.name}
+          </option>
+        ))}
+      </select>
 
       <button type="submit">Add Member</button>
     </form>

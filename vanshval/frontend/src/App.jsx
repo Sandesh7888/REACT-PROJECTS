@@ -7,6 +7,7 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import NewMember from "./pages/NewMember.jsx";
 import TreeView from "./pages/TreeView.jsx";
+import MemberDetails from "./pages/MemberDetails.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
             <Route path="/tree" element={<TreeView />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/members/:id" element={<ProtectedRoute><MemberDetails /></ProtectedRoute>} />
             <Route
               path="/new"
               element={
