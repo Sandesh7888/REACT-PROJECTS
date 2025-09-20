@@ -1,37 +1,36 @@
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext.jsx";
+import Header from "./components/Header.jsx";
+import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
+import NewMember from "./pages/NewMember.jsx";
+import TreeView from "./pages/TreeView.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
-import { AuthProvider } from "./context/AuthContext";
-import Header from "./components/Header";
-import ProtectedRoute from "./components/ProtectedRoute";
-
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import NewMember from "./pages/NewMember";
-import TreeView from "./pages/TreeView";
-
-function App() {
+export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route
-            path="/new-member"
-            element={
-              <ProtectedRoute>
-                <NewMember />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/tree" element={<TreeView />} />
-        </Routes>
+        <div className="app-container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/tree" element={<TreeView />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route
+              path="/new"
+              element={
+                <ProtectedRoute>
+                  <NewMember />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
       </BrowserRouter>
     </AuthProvider>
   );
 }
-
-export default App;

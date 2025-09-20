@@ -1,30 +1,34 @@
-import { useState, useContext } from "react";
-import api from "../api";
-import { AuthContext } from "../context/AuthContext";
+import React, { useState, useContext } from "react";
+import api from "../api/index.js";
+import { AuthContext } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const nav = useNavigate();
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await api.post("/auth/login", { email, password });
-      login(data.user, data.token);
-      navigate("/");
+      login(data.user || { _id: data._id, name: data.name }, data.token || data.token);
+      nav("/");
     } catch (err) {
-      alert("Login failed");
+      console.error(err);
+      alert("Login failed: " + (err.response?.data?.message || err.message));
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-      <button type="submit">Login</button>
-    </form>
+    <div className="container">
+      <h2>Login</h2>
+      <form onSubmit={submit} style={{ display:"flex", flexDirection:"column", gap:8, maxWidth:420 }}>
+        <input placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} required />
+        <input type="password" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} required />
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 }

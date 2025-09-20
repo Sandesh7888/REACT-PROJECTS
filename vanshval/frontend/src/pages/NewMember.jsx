@@ -1,9 +1,10 @@
-import MemberForm from "../components/MemberForm";
+import React from "react";
+import MemberForm from "../components/MemberForm.jsx";
 
 export default function NewMember() {
   return (
-    <div>
-      <h2>Add New Member</h2>
+    <div className="container">
+      <h2>Add Member</h2>
       <MemberForm />
     </div>
   );

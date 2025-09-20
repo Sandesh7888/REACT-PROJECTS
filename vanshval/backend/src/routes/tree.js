@@ -1,7 +1,10 @@
 import express from "express";
-import { getTree } from "../controllers/memberController.js";
+import auth from "../middlewares/auth.js";
+import { getFamilyTree } from "../controllers/memberController.js";
+
 const router = express.Router();
 
-router.get("/", getTree);
+// GET /api/tree/:id  (protected)
+router.get("/:id", auth, getFamilyTree);
 
 export default router;

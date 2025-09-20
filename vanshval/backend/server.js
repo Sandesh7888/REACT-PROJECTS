@@ -10,17 +10,25 @@ import treeRoutes from "./src/routes/tree.js";
 dotenv.config();
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
-if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
+app.use(morgan("dev"));
 
-// Routes
+// Mount API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/members", memberRoutes);
 app.use("/api/tree", treeRoutes);
 
+// root
+app.get("/", (req, res) => res.send("🌳 Vanshval API running"));
+
+// Start
 const PORT = process.env.PORT || 5000;
-connectDB().then(() => {
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-});
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error("Failed to connect DB:", err.message);
+    process.exit(1);
+  });

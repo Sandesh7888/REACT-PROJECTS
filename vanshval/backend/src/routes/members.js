@@ -1,11 +1,11 @@
 import express from "express";
-import { addMember, getMembers } from "../controllers/memberController.js";
-import { protect } from "../middlewares/auth.js";
+import auth from "../middlewares/auth.js";
+import { createMember, getAllMembers } from "../controllers/memberController.js";
+
 const router = express.Router();
 
-
-
-router.get("/", protect, getMembers);
-router.post("/", protect, addMember);
+// Protected routes (create/get)
+router.get("/", auth, getAllMembers);
+router.post("/", auth, createMember);
 
 export default router;
