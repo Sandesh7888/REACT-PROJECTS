@@ -1,10 +1,9 @@
+// routes/tree.js
 import express from "express";
-import auth from "../middlewares/auth.js";
 import { getFamilyTree } from "../controllers/memberController.js";
 
 const router = express.Router();
 
-// GET /api/tree/:id  (protected)
-router.get("/:id", auth, getFamilyTree);
+router.get("/:id", getFamilyTree); // remove `auth` for testing
 
 export default router;
