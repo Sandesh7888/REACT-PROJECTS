@@ -31,3 +31,11 @@ function TreeNode({ member }) {
   );
 }
 
+export default function Tree({ treeData }) {
+  if (!treeData) return null;
+  return (
+    <div>
+      <TreeNode member={treeData} />
+    </div>
+  );
+}
