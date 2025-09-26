@@ -6,6 +6,9 @@ import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/auth.js";
 import memberRoutes from "./src/routes/members.js";
 import treeRoutes from "./src/routes/tree.js";
+import familiesRoutes from './src/routes/families.js';
+
+
 
 dotenv.config();
 const app = express();
@@ -18,6 +21,7 @@ app.use(morgan("dev"));
 app.use("/api/auth", authRoutes);
 app.use("/api/members", memberRoutes);
 app.use("/api/tree", treeRoutes);
+app.use('/api/families', familiesRoutes);
 
 // root
 app.get("/", (req, res) => res.send("🌳 Vanshval API running"));
