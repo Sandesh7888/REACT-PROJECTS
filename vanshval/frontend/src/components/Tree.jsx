@@ -65,3 +65,24 @@ export default function Tree({ treeData }) {
       console.error("Error building nodes/edges:", err);
       return { nodes: [], edges: [] };
     }
+  }, [treeData]);
+
+  // empty-state helpful message
+  if (!treeData) {
+    return <div style={{ padding: 12 }}>No tree data — select a root and click "Load Tree".</div>;
+  }
+
+  if (!nodes.length) {
+    return <div style={{ padding: 12 }}>No visible nodes were built from the data. Check console for treeData shape.</div>;
+  }
+
+  return (
+    <div style={{ width: "100%", height: "70vh", backgroundColor: "#f9f9f9" }}>
+      <ReactFlow nodes={nodes} edges={edges} fitView>
+        <MiniMap />
+        <Controls />
+        <Background />
+      </ReactFlow>
+    </div>
+  );
+}
